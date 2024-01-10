@@ -13,7 +13,6 @@ class _FileApp extends State<FileApp> {
   List<String> itemList = new List.empty(growable: true);
   TextEditingController controller = new TextEditingController();
 
-
   Future<List<String>> readListFile() async {
     List<String> itemList = new List.empty(growable: true);
     var key = 'first';
@@ -23,11 +22,11 @@ class _FileApp extends State<FileApp> {
     bool fileExist = await File(dir.path + 'fruit.txt')
         .exists(); //exist가 함수 내부 저장소에 파일을 찾는 것.
 
-    if (firstCheck == null || firstCheck == false ||
-        fileExist == false) { //처음 열거나 없으면 file을 만들어 저장해주고 리스트에 넣어주기
+    if (firstCheck == null || firstCheck == false || fileExist == false) {
+      //처음 열거나 없으면 file을 만들어 저장해주고 리스트에 넣어주기
       pref.setBool(key, true);
       var file =
-      await DefaultAssetBundle.of(context).loadString('repo/fruit.txt');
+          await DefaultAssetBundle.of(context).loadString('repo/fruit.txt');
 
       File(dir.path + '/fruit.txt').writeAsStringSync(file);
       var array = file.split('\n'); //한칸씩 단위로 파일을 끊겠다.
@@ -76,26 +75,29 @@ class _FileApp extends State<FileApp> {
                 controller: controller,
                 keyboardType: TextInputType.text,
               ),
-              ListView.builder(itemBuilder: (context, index) {
-                return Card(
-                  child: Center(
-                    child: Text(
-                      itemList[index],
-                      style: TextStyle(fontSize: 30),
+              Expanded(
+                  child: ListView.builder(
+                itemBuilder: (context, index) {
+                  return Card(
+                    child: Center(
+                      child: Text(
+                        itemList[index],
+                        style: TextStyle(fontSize: 30),
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
                 itemCount: itemList.length,
-              )
+              )),
             ],
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          child: Icon(Icons.add),
-    ),);
+        onPressed: () {},
+        child: Icon(Icons.add),
+      ),
+    );
   }
 
   void writeCountFile(int count) async {
